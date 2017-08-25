@@ -1,0 +1,22 @@
+---
+# Available Server : coinone /  bithumb
+# Default : coinone
+server: coinone
+
+# Available Coins
+# btc (Bitcoin)
+# eth (Ethereum)
+# etc (Ethereum Classic)
+# xrp (Ripple)
+# bch (Bitcoin Cash)
+available-coins:
+- btc
+- eth
+- etc
+- xrp
+- bch
+
+# Prices of all coin are broadcast to players
+# Default : 60 second
+price-broadcast-interval: 60
+...
