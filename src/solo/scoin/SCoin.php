@@ -37,6 +37,10 @@ class SCoin extends PluginBase{
 
   private $config;
 
+  private $economy;
+
+  private $accountManager = null;
+
   private $coins = [];
 
   private $availableCoins = [];
@@ -49,6 +53,12 @@ class SCoin extends PluginBase{
   }
 
   public function onEnable(){
+    $this->economy = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+    if($this->economy === null){
+      $this->getServer()->getLogger()->critical("[SCoin] EconomyAPI 플러그인을 찾을 수 없습니다. 플러그인을 비활성화합니다.");
+      return;
+    }
+
     @mkdir($this->getDataFolder());
     $this->saveResource("setting.yml");
     $this->config = new Config($this->getDataFolder() . "setting.yml", Config::YAML);
@@ -83,9 +93,15 @@ class SCoin extends PluginBase{
   }
 
   public function onDisable(){
-    $this->accountManager->save();
+    if($this->accountManager !== null){
+      $this->accountManager->save();
+    }
 
     self::$instance = null;
+  }
+
+  public function getEconomy(){
+    return $this->economy;
   }
 
   public function getAccountManager(){

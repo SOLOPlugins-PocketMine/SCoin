@@ -7,7 +7,6 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 
 use solo\scoin\SCoin;
-use onebone\economyapi\EconomyAPI;
 
 class CoinPurchaseCommand extends CoinCommand{
 
@@ -38,47 +37,47 @@ class CoinPurchaseCommand extends CoinCommand{
       return true;
     }
     $account = $this->owner->getAccountManager()->getAccount($sender);
-    $money = EconomyAPI::getInstance()->myMoney($sender);
+    $money = $this->owner->getEconomy()->myMoney($sender);
     $args[0] = strtoupper($args[0] ?? "invalid");
 
     // buy as money
     if(preg_match('/^([0-9]+(\.[0-9]+)?)$/', $args[0])){
       if($money < $args[0]){
-        $sender->sendMessage(SCoin::$prefix . "돈이 부족합니다. 현재 소지한 돈 : " . $money);
+        $sender->sendMessage(SCoin::$prefix . "돈이 부족합니다. 현재 소지한 돈 : " . $this->owner->getEconomy()->koreanWonFormat($money));
         return true;
       }
-      EconomyAPI::getInstance()->reduceMoney($sender, $args[0]);
+      $this->owner->getEconomy()->reduceMoney($sender, $args[0]);
       $coinAmount = $args[0] / $coinInfo->getBuyPrice();
       $account->addCoin($this->type, $coinAmount);
 
-      $sender->sendMessage(SCoin::$prefix . $coinAmount . $this->type . " 를 구매하셨습니다. ( " . $args[0] . "원 )");
+      $sender->sendMessage(SCoin::$prefix . $coinAmount . $this->type . " 를 구매하셨습니다. (" . $this->owner->getEconomy()->koreanWonFormat($args[0]) . ")");
 
     // buy as Current Money Percentage
     }else if(preg_match('/^(((100)|[0-9]{1,2})(\.[0-9]+)?%)$/', $args[0])){
       $args[0] = str_replace('%', '', $args[0]);
       $args[0] = $money * $args[0] / 100;
-      EconomyAPI::getInstance()->reduceMoney($sender, $args[0]);
+      $this->owner->getEconomy()->reduceMoney($sender, $args[0]);
       $coinAmount = $args[0] / $coinInfo->getBuyPrice();
       $account->addCoin($this->type, $coinAmount);
 
-      $sender->sendMessage(SCoin::$prefix . $coinAmount . $this->type . " 를 구매하셨습니다. ( " . $args[0] . "원 )");
+      $sender->sendMessage(SCoin::$prefix . $coinAmount . $this->type . " 를 구매하셨습니다. (" . $this->owner->getEconomy()->koreanWonFormat($args[0]) . ")");
 
     // buy as COIN
     }else if(preg_match('/^([0-9]+(\.[0-9]+)?' . $this->type . ')$/', $args[0])){
       $coinAmount = str_replace($this->type, '', $args[0]);
       $args[0] = $coinAmount * $coinInfo->getBuyPrice();
       if($money < $args[0]){
-        $sender->sendMessage(SCoin::$prefix . "돈이 부족합니다. 현재 소지한 돈 : " . $money);
+        $sender->sendMessage(SCoin::$prefix . "돈이 부족합니다. 현재 소지한 돈 : " . $this->owner->getEconomy()->koreanWonFormat($money));
         return true;
       }
-      EconomyAPI::getInstance()->reduceMoney($sender, $args[0]);
+      $this->owner->getEconomy()->reduceMoney($sender, $args[0]);
       $account->addCoin($this->type, $coinAmount);
 
-      $sender->sendMessage(SCoin::$prefix . $coinAmount . $this->type . " 를 구매하셨습니다. ( " . $args[0] . "원 )");
+      $sender->sendMessage(SCoin::$prefix . $coinAmount . $this->type . " 를 구매하셨습니다. (" . $this->owner->getEconomy()->koreanWonFormat($args[0]) . ")");
     }else{
-      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . " 구매 <금액> - 금액만큼의 " . $this->name . "을 구매합니다.");
-      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . " 구매 <0~100>% - 가지고 있는 돈의 %만큼 " . $this->name . "을 구매합니다.");
-      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . " 구매 <수량>" . $this->type . " - 수량만큼 " . $this->name . "을 구매합니다.");
+      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . "구매 <금액> - 금액만큼의 " . $this->name . "을 구매합니다.");
+      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . "구매 <0~100>% - 가지고 있는 돈의 %만큼 " . $this->name . "을 구매합니다.");
+      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . "구매 <수량>" . $this->type . " - 수량만큼 " . $this->name . "을 구매합니다.");
     }
     return true;
   }

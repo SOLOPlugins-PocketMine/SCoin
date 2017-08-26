@@ -50,7 +50,7 @@ class CoinSeeCommand extends CoinCommand{
     }
 
     $coin = $account->getCoin($this->type);
-    $sender->sendMessage(SCoin::$prefix . $target . " 님의 " . $this->name . " 수량 : " . $coin . $this->type . " ( " . $coin * $coinInfo->getSellPrice() . " )");
+    $sender->sendMessage(SCoin::$prefix . $target . " 님의 " . $this->name . " 수량 : " . $coin . $this->type . " ( " . $this->owner->getEconomy()->koreanWonFormat($coin * $coinInfo->getSellPrice()) . " )");
     return true;
   }
 }

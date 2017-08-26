@@ -39,7 +39,7 @@ class CoinSellCommand extends CoinCommand{
     }
 
     $account = $this->owner->getAccountManager()->getAccount($sender);
-    $money = EconomyAPI::getInstance()->myMoney($sender);
+    $money = $this->owner->getEconomy()->myMoney($sender);
     $args[0] = strtoupper($args[0] ?? "invalid");
 
     if(preg_match('/^([0-9]+(\.[0-9]+)?)$/', $args[0])){
@@ -50,9 +50,9 @@ class CoinSellCommand extends CoinCommand{
         return true;
       }
       $account->reduceCoin($this->type, $args[0]);
-      EconomyAPI::getInstance()->addMoney($sender, $moneyAmount);
+      $this->owner->getEconomy()->addMoney($sender, $moneyAmount);
 
-      $sender->sendMessage(SCoin::$prefix . $args[0] . $this->type . " 를 판매하셨습니다. ( " . $moneyAmount . "원 )");
+      $sender->sendMessage(SCoin::$prefix . $args[0] . $this->type . " 를 판매하셨습니다. " . $this->owner->getEconomy()->koreanWonFormat($moneyAmount) . ")");
 
     // sell as Current Coin Percentage
     }else if(preg_match('/^(((100)|[0-9]{1,2})(\.[0-9]+)?%)$/', $args[0])){
@@ -60,9 +60,9 @@ class CoinSellCommand extends CoinCommand{
       $args[0] = $account->getCoin($this->type) * $args[0] / 100;
       $account->reduceCoin($this->type, $args[0]);
       $moneyAmount = $args[0] * $coinInfo->getSellPrice();
-      EconomyAPI::getInstance()->addMoney($sender, $moneyAmount);
+      $this->owner->getEconomy()->addMoney($sender, $moneyAmount);
 
-      $sender->sendMessage(SCoin::$prefix . $args[0] . $this->type . " 를 판매하셨습니다. ( " . $moneyAmount . "원 )");
+      $sender->sendMessage(SCoin::$prefix . $args[0] . $this->type . " 를 판매하셨습니다. (" . $this->owner->getEconomy()->koreanWonFormat($moneyAmount) . ")");
 
     // sell as COIN
     }else if(preg_match('/^([0-9]+(\.[0-9]+)?' . $this->type . ')$/', $args[0])){
@@ -73,14 +73,14 @@ class CoinSellCommand extends CoinCommand{
       }
       $account->reduceCoin($this->type, $args[0]);
       $moneyAmount = $args[0] * $coinInfo->getSellPrice();
-      EconomyAPI::getInstance()->addMoney($sender, $moneyAmount);
+      $this->owner->getEconomy()->addMoney($sender, $moneyAmount);
 
-      $sender->sendMessage(SCoin::$prefix . $args[0] . $this->type . " 를 판매하셨습니다. ( " . $moneyAmount . "원 )");
+      $sender->sendMessage(SCoin::$prefix . $args[0] . $this->type . " 를 판매하셨습니다. (" . $this->owner->getEconomy()->koreanWonFormat($moneyAmount) . ")");
 
     }else{
-      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . " 판매 <금액> - 금액만큼의 " . $this->name . "을 구매합니다.");
-      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . " 판매 <0~100>% - 가지고 있는 돈의 %만큼 " . $this->name . "을 구매합니다.");
-      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . " 판매 <수량>" . $this->type . " - 수량만큼 " . $this->name . "을 구매합니다.");
+      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . "판매 <금액> - 금액만큼의 " . $this->name . "을 구매합니다.");
+      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . "판매 <0~100>% - 가지고 있는 돈의 %만큼 " . $this->name . "을 구매합니다.");
+      $sender->sendMessage(SCoin::$prefix . "/" . $this->type . "판매 <수량>" . $this->type . " - 수량만큼 " . $this->name . "을 구매합니다.");
     }
     return true;
   }

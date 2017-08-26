@@ -31,11 +31,11 @@ class CoinPriceCommand extends CoinCommand{
       $sender->sendMessage(SCoin::$prefix . "현재 시세 로드중입니다. 잠시만 기다려주세요...");
       return true;
     }
-    $sender->sendMessage("§l==========[ 현재 시세 ]==========");
-    $sender->sendMessage("§l§a구매가§r§f : " . $coinInfo->getBuyPrice());
-    $sender->sendMessage("§l§a판매가§r§f : " . $coinInfo->getSellPrice());
-    $sender->sendMessage("§l§a24시간 최고가§r§f : " . $coinInfo->getMaxPrice());
-    $sender->sendMessage("§l§a24시간 최저가§r§f : " . $coinInfo->getMinPrice());
+    $sender->sendMessage("§l==========[ " . $this->name . " 현재 시세 ]==========");
+    $sender->sendMessage("§l§a구매가§r§f : " . $this->owner->getEconomy()->koreanWonFormat($coinInfo->getBuyPrice()));
+    $sender->sendMessage("§l§a판매가§r§f : " . $this->owner->getEconomy()->koreanWonFormat($coinInfo->getSellPrice()));
+    $sender->sendMessage("§l§a24시간 최고가§r§f : " . $this->owner->getEconomy()->koreanWonFormat($coinInfo->getMaxPrice()));
+    $sender->sendMessage("§l§a24시간 최저가§r§f : " . $this->owner->getEconomy()->koreanWonFormat($coinInfo->getMinPrice()));
     return true;
   }
 }
