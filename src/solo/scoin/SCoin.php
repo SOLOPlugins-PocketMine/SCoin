@@ -39,6 +39,8 @@ class SCoin extends PluginBase{
 
   private $coins = [];
 
+  private $availableCoins = [];
+
   public function onLoad(){
     if(self::$instance !== null){
       throw new \InvalidStateException();
@@ -48,12 +50,13 @@ class SCoin extends PluginBase{
 
   public function onEnable(){
     @mkdir($this->getDataFolder());
-    $this->saveResource($this->getDataFolder() . "setting.yml");
+    $this->saveResource("setting.yml");
     $this->config = new Config($this->getDataFolder() . "setting.yml", Config::YAML);
+    $this->availableCoins = array_map('strtoupper', $this->config->get("available-coins", []));
 
     foreach($this->getAvailableCoins() as $type){
       $type = strtoupper($type);
-      switch(strtolower($this->config->get("server"))){
+      switch(strtolower($this->config->get("server", "coinone"))){
         case "bithumb":
           $this->coins[$type] = new BithumbCoinInfo($type);
           break;
@@ -75,7 +78,7 @@ class SCoin extends PluginBase{
 
     $this->accountManager = new AccountManager($this);
 
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CoinPriceBroadcastTask($this), $this->config->get("price-broadcast-interval") * 20);
+    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CoinPriceBroadcastTask($this), $this->config->get("price-broadcast-interval", 60) * 20);
     $this->getServer()->getScheduler()->scheduleRepeatingTask(new CoinInfoUpdateTask($this), 50);
   }
 
@@ -90,7 +93,7 @@ class SCoin extends PluginBase{
   }
 
   public function getAvailableCoins(){
-    return array_map('strtoupper', $this->config->get("available-coins"));
+    return $this->availableCoins;
   }
 
   public function getAllCoinInfo(){

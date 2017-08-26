@@ -62,10 +62,10 @@ class AllStatusCommand extends SCoinCommand{
             $sender->sendMessage("§l==========[ 코인 도움말 (전체 4페이지 중 3페이지) ]==========");
             $sender->sendMessage("§l§a* 코인은 어떻게 구매 또는 판매할 수 있나요?");
             $sender->sendMessage(" ");
-            $sender->sendMessage("코인은 /[코인명 또는 통화명] [구매/판매] 명령어로 구매 또는 판매가 가능합니다.");
+            $sender->sendMessage("코인은 /<코인명 또는 통화명><구매|판매> 명령어로 구매 또는 판매가 가능합니다.");
             $sender->sendMessage(" ");
             foreach($this->owner->getAvailableCoins() as $type){
-              $sender->sendMessage((isset(SCoin::$nameList[$type])) ? "/" . SCoin::$nameList[$type] . " [구매/판매] 또는 /" . $type . " [구매/판매]" : "/" . $type . " [구매/판매]");
+              $sender->sendMessage((isset(SCoin::$nameList[$type])) ? "/" . str_replace(' ', '', SCoin::$nameList[$type]) . "<구매|판매> 또는 /" . $type . "<구매|판매>" : "/" . $type . "<구매|판매>");
             }
             break;
 
@@ -83,7 +83,7 @@ class AllStatusCommand extends SCoinCommand{
         $target;
         if(!isset($args[1])){
           if(!$sender instanceof Player){
-            $sender->sendMessage(SCoin::$prefix . "사용법 : /코인 확인 [플레이어] - 플레이어가 소지한 코인을 확인합니다.");
+            $sender->sendMessage(SCoin::$prefix . "사용법 : /코인 확인 <플레이어> - 플레이어가 소지한 코인을 확인합니다.");
             return true;
           }
           $target = $sender->getName();

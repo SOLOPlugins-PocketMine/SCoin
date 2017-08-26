@@ -15,7 +15,7 @@ class CoinSellCommand extends CoinCommand{
 
   public function __construct(SCoin $owner, string $type){
     parent::initCommand($type);
-    parent::__construct($this->type . "구매", $this->name . "을(를) 구매합니다.", "/" . $this->type . "구매 [args]", [str_replace(' ', '', $this->name) . "구매", strtolower($type) . "구매"]);
+    parent::__construct($this->type . "판매", $this->name . "을(를) 판매합니다.", "/" . $this->type . "판매 [args]", [str_replace(' ', '', $this->name) . "판매", strtolower($type) . "판매"]);
     $this->setPermission("scoin.command.coinsell");
 
     $this->owner = $owner;
