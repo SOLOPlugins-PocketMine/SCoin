@@ -2,10 +2,10 @@
 
 namespace solo\scoin\command;
 
+use pocketmine\command\Command;
 use solo\scoin\SCoin;
-use solo\scoin\SCoinCommand;
 
-abstract class CoinCommand extends SCoinCommand{
+abstract class CoinCommand extends Command{
 
   protected $type;
   protected $name;

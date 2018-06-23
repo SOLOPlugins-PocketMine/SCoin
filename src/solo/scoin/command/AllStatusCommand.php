@@ -3,13 +3,10 @@
 namespace solo\scoin\command;
 
 use pocketmine\Player;
-use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-
 use solo\scoin\SCoin;
-use solo\scoin\SCoinCommand;
 
-class AllStatusCommand extends SCoinCommand{
+class AllStatusCommand extends CoinCommand{
 
   private $owner;
 
@@ -20,7 +17,7 @@ class AllStatusCommand extends SCoinCommand{
     $this->owner = $owner;
   }
 
-  public function _execute(CommandSender $sender, string $label, array $args) : bool{
+  public function execute(CommandSender $sender, string $label, array $args) : bool{
     if(!$sender->hasPermission($this->getPermission())){
       $sender->sendMessage(SCoin::$prefix . "이 명령을 실행할 권한이 없습니다.");
       return true;

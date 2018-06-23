@@ -3,9 +3,7 @@
 namespace solo\scoin\command;
 
 use pocketmine\Player;
-use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-
 use solo\scoin\SCoin;
 use onebone\economyapi\EconomyAPI;
 
@@ -21,7 +19,7 @@ class CoinSellCommand extends CoinCommand{
     $this->owner = $owner;
   }
 
-  public function _execute(CommandSender $sender, string $label, array $args) : bool{
+  public function execute(CommandSender $sender, string $label, array $args) : bool{
     if(!$sender instanceof Player){
       $sender->sendMessage(SCoin::$prefix . "인게임에서만 사용하실 수 있습니다.");
       return true;

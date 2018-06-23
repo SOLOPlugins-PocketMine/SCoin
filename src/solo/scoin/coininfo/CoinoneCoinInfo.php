@@ -9,7 +9,7 @@ use pocketmine\utils\Utils;
 class CoinoneCoinInfo extends CoinInfo{
 
   public function update(){
-    Server::getInstance()->getScheduler()->scheduleAsyncTask(new class($this->type) extends AsyncTask{
+    Server::getInstance()->getAsyncPool()->submitTask(new class($this->type) extends AsyncTask{
       private $type;
 
       public function __construct(string $type){

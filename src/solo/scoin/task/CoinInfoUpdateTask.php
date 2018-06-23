@@ -2,11 +2,18 @@
 
 namespace solo\scoin\task;
 
-use solo\scoin\SCoinTask;
+use pocketmine\scheduler\Task;
+use solo\scoin\SCoin;
 
-class CoinInfoUpdateTask extends SCoinTask{
+class CoinInfoUpdateTask extends Task{
 
-  public function _onRun(int $currentTick){
+  private $owner;
+
+  public function __construct(SCoin $owner){
+    $this->owner = $owner;
+  }
+
+  public function onRun(int $currentTick){
     foreach($this->owner->getAllCoinInfo() as $coinInfo){
       $coinInfo->update();
     }

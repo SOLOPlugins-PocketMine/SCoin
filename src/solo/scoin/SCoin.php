@@ -88,8 +88,8 @@ class SCoin extends PluginBase{
 
     $this->accountManager = new AccountManager($this);
 
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CoinPriceBroadcastTask($this), $this->config->get("price-broadcast-interval", 60) * 20);
-    $this->getServer()->getScheduler()->scheduleRepeatingTask(new CoinInfoUpdateTask($this), 50);
+    $this->getScheduler()->scheduleRepeatingTask(new CoinPriceBroadcastTask($this), $this->config->get("price-broadcast-interval", 60) * 20);
+    $this->getScheduler()->scheduleRepeatingTask(new CoinInfoUpdateTask($this), 50);
   }
 
   public function onDisable(){

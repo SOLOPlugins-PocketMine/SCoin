@@ -2,14 +2,20 @@
 
 namespace solo\scoin\task;
 
+use pocketmine\scheduler\Task;
 use solo\scoin\SCoin;
-use solo\scoin\SCoinTask;
 
-class CoinPriceBroadcastTask extends SCoinTask{
+class CoinPriceBroadcastTask extends Task{
+
+  private $owner;
 
   private $lastCheck = [];
 
-  public function _onRun(int $currentTick){
+  public function __construct(SCoin $owner){
+    $this->owner = $owner;
+  }
+
+  public function onRun(int $currentTick){
     $message = "§a[코인시세] ";
     $isEmpty = true;
     foreach($this->owner->getAllCoinInfo() as $coinInfo){
