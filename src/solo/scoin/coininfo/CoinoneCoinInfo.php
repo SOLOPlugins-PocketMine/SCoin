@@ -4,7 +4,7 @@ namespace solo\scoin\coininfo;
 
 use pocketmine\Server;
 use pocketmine\scheduler\AsyncTask;
-use pocketmine\utils\Utils;
+use pocketmine\utils\Internet;
 
 class CoinoneCoinInfo extends CoinInfo{
 
@@ -17,7 +17,7 @@ class CoinoneCoinInfo extends CoinInfo{
       }
 
       public function onRun(){
-        $response = Utils::getURL("https://api.coinone.co.kr/ticker?currency=" . $this->type);
+        $response = Internet::getURL("https://api.coinone.co.kr/ticker?currency=" . $this->type);
 
         if($response !== false){
           $response = json_decode($response, true);

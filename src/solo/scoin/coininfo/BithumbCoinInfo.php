@@ -4,7 +4,7 @@ namespace solo\scoin\coininfo;
 
 use pocketmine\Server;
 use pocketmine\scheduler\AsyncTask;
-use pocketmine\utils\Utils;
+use pocketmine\utils\Internet;
 
 class BithumbCoinInfo extends CoinInfo{
 
@@ -17,7 +17,7 @@ class BithumbCoinInfo extends CoinInfo{
       }
 
       public function onRun(){
-        $response = Utils::getURL("https://api.bithumb.com/public/ticker/" . $this->type);
+        $response = Internet::getURL("https://api.bithumb.com/public/ticker/" . $this->type);
 
         if($response !== false){
           $response = json_decode($response, true);
